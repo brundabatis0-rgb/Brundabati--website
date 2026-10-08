@@ -3,22 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>Tech Quiz App</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             color: #333;
-            margin-top: 50px;
         }
-        h1 {
-            color: #0066cc;
+        .quiz-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            background: #edf2f7;
+            margin: 10px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        .option:hover {
+            background: #cbd5e0;
+        }
+        .option.correct {
+            background: #48bb78 !important;
+            color: white;
+        }
+        .option.wrong {
+            background: #f56565 !important;
+            color: white;
+        }
+        #next-btn {
+            display: none;
+            width: 100%;
+            background: #4c51bf;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        #next-btn:hover {
+            background: #434190;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2b6cb0;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
-    <p>This is my website where I share my skills, interests, and learning journey.</p>
+
+    <div class="quiz-container">
+        <h2>🚀 Tech Quiz</h2>
+        <div id="quiz-box">
+            <div class="question" id="question-text">Loading question...</div>
+            <ul class="options-list" id="options-list">
+                <!-- Options will load here -->
+            </ul>
+            <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What does HTML stand for?",
+                options: [
+                    "Hyper Text Markup Language",
+                    "High Tech Modern Language",
+                    "Hyper Transfer Machine Language",
+                    "HyperText Markup Link"
+                ],
+                correct: 0
+            },
+            {
+                question: "Which of the following is NOT a programming language?",
+                options: ["Python", "HTML", "JavaScript", "C++"],
+                correct: 1
+            },
+            {
+                question: "What is the main purpose of CSS?",
+                options: [
+                    "To manage databases",
+                    "To style and design web pages",
+                    "To run the server",
+                    "To compile source code"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionText = document.getElementById("question-text");
+        const optionsList = document.getElementById("options-list");
+        const nextBtn = document.getElementById("next-btn");
+        const resultDiv = document.getElementById("result");
+        const quizBox = document.getElementById("quiz-box");
+
+        function loadQuestion() {
+            answered = false;
+            nextBtn.style.display = "none";
+            const currentQuiz = quizData[currentQuestion];
+            questionText.innerText = `${currentQuestion + 1}. ${currentQuiz.question}`;
+            optionsList.innerHTML = "";
+
+            currentQuiz.options.forEach((option, index) => {
+                const li = document.createElement("li");
+                li.classList.add("option");
+                li.innerText = option;
+                li.onclick = () => selectOption(index, li);
+                optionsList.appendChild(li);
+            });
+        }
+
+        function selectOption(selectedIndex, element) {
+            if (answered) return;
+            answered = true;
+
+            const currentQuiz = quizData[currentQuestion];
+            const options = document.querySelectorAll(".option");
+
+            if (selectedIndex === currentQuiz.correct) {
+                element.classList.add("correct");
+                score++;
+            } else {
+                element.classList.add("wrong");
+                options[currentQuiz.correct].classList.add("correct");
+            }
+
+            nextBtn.style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                quizBox.style.display = "none";
+                resultDiv.innerHTML = `🎉 Quiz Complete!<br>Your Score: ${score} / ${quizData.length}`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+
 </body>
 </html>
