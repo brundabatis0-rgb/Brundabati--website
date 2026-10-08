@@ -22,7 +22,7 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
         h2 {
             text-align: center;
@@ -59,7 +59,7 @@
             background: #f56565 !important;
             color: white;
         }
-        #next-btn {
+        #next-btn, #restart-btn {
             display: none;
             width: 100%;
             background: #4c51bf;
@@ -72,7 +72,7 @@
             margin-top: 20px;
             transition: background 0.3s;
         }
-        #next-btn:hover {
+        #next-btn:hover, #restart-btn:hover {
             background: #434190;
         }
         #result {
@@ -86,7 +86,7 @@
 <body>
 
     <div class="quiz-container">
-        <h2>🚀 Tech Quiz</h2>
+        <h2>🚀 Ultimate Tech Quiz</h2>
         <div id="quiz-box">
             <div class="question" id="question-text">Loading question...</div>
             <ul class="options-list" id="options-list">
@@ -95,6 +95,7 @@
             <button id="next-btn" onclick="nextQuestion()">Next Question</button>
         </div>
         <div id="result"></div>
+        <button id="restart-btn" onclick="restartQuiz()">Play Again</button>
     </div>
 
     <script>
@@ -123,6 +124,46 @@
                     "To compile source code"
                 ],
                 correct: 1
+            },
+            {
+                question: "Which symbol is used for comments in Python?",
+                options: ["//", "/*", "#", "<!--"],
+                correct: 2
+            },
+            {
+                question: "Inside which HTML element do we put the JavaScript?",
+                options: ["<script>", "<js>", "<javascript>", "<code>"],
+                correct: 0
+            },
+            {
+                question: "Which language is used for styling web pages?",
+                options: ["HTML", "JQuery", "CSS", "XML"],
+                correct: 2
+            },
+            {
+                question: "What does SQL stand for?",
+                options: [
+                    "Stylish Question Language",
+                    "Structured Query Language",
+                    "Statement Query Logic",
+                    "Secure Question Link"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which of these is a JavaScript framework/library?",
+                options: ["Django", "React", "Laravel", "Flask"],
+                correct: 1
+            },
+            {
+                question: "What is the extension of a Python file?",
+                options: [".pt", ".py", ".pyt", ".pn"],
+                correct: 1
+            },
+            {
+                question: "Which data structure follows the First In, First Out (FIFO) principle?",
+                options: ["Stack", "Queue", "Tree", "Graph"],
+                correct: 1
             }
         ];
 
@@ -135,6 +176,7 @@
         const nextBtn = document.getElementById("next-btn");
         const resultDiv = document.getElementById("result");
         const quizBox = document.getElementById("quiz-box");
+        const restartBtn = document.getElementById("restart-btn");
 
         function loadQuestion() {
             answered = false;
@@ -176,8 +218,19 @@
                 loadQuestion();
             } else {
                 quizBox.style.display = "none";
+                nextBtn.style.display = "none";
                 resultDiv.innerHTML = `🎉 Quiz Complete!<br>Your Score: ${score} / ${quizData.length}`;
+                restartBtn.style.display = "block";
             }
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizBox.style.display = "block";
+            resultDiv.innerHTML = "";
+            restartBtn.style.display = "none";
+            loadQuestion();
         }
 
         loadQuestion();
@@ -185,35 +238,3 @@
 
 </body>
 </html>
-="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Quiz App</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
-        }
-        .quiz-container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-        h2 {
-            text-align: center;
-            color: #4a5568;
-            margin-bottom: 20px;
-        }
-        .question {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2d3748;
